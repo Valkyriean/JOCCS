@@ -1,6 +1,6 @@
 # JOCCS
 
-##Our Vision:     
+#Our Vision:     
     FLAWLESS
     UNALTERABLE
     CIRCUMSPECT
