@@ -2,8 +2,16 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
+var input = fs.readFileSync('./package/input.txt').toString();
+var inputArr = input.split("\r\n")
+inputArr.pop()
 
-var code = fs.readFileSync('code.txt').toString();
+//var output = fs.readFileSync('')
+
+//console.log(inputArr)
+
+
+var code = fs.readFileSync('./package/code.txt').toString();
 var res = code.match(/[^{]*/);
 var codeTokens=res[0].trim().split(" ")
 var classname=codeTokens[codeTokens.length-1];
@@ -47,6 +55,7 @@ child.on('exit', function (code, signal) {
 
         runClass.stdout.on('data', function (data) {
             output=output+data.toString();
+            console.log(output);
         });
         runClass.stderr.on('data', function (data) {
             output=output+data.toString();
@@ -58,6 +67,7 @@ child.on('exit', function (code, signal) {
 child.stdout.on('data', function (data) {
     console.log(data.toString());
 });
+
 child.stderr.on('data', function (data) {
     console.log(data.toString());
 });
