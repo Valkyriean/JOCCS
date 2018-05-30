@@ -35,10 +35,6 @@ var parameter = [classpath+"/"+classname+".java"];
 var child  = spawn(command, parameter);
 
 
-  var command = "javac";
-  var parameter = [classpath+"/"+classname+".java"];
-  var child  = spawn(command, parameter);
-
   child.on('exit', function (code, signal) {
 
         child.kill();
