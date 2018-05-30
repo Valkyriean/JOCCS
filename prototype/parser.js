@@ -23,6 +23,14 @@ fs.mkdirSync(classpath);
 fs.writeFileSync(classpath+"/"+classname+".java", code);
 //java -classpath compileFolder/test/ Test
 
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+}
 
 var inputArr = ["10", "20", "hehe"];
 var actualOutput = [];
@@ -56,8 +64,9 @@ var child  = spawn(command, parameter);
               runClass.stdin.setEncoding('utf-8');
 
               runClass.stdin.write(item);
+                sleep(1000);
 
-              runClass.stdin.end();
+                runClass.stdin.end();
 
 
               runClass.on('exit', function (code, signal) {
@@ -79,6 +88,8 @@ var child  = spawn(command, parameter);
                     actualOutput.push(data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
                     //console.log(output);
                     console.log(actualOutput);
+                      sleep(1000);
+
                   }
 
               });
