@@ -24,16 +24,96 @@ fs.writeFileSync(classpath+"/"+classname+".java", code);
 //java -classpath compileFolder/test/ Test
 
 
+var inputArr = ["10", "20", "hehe"];
+var actualOutput = [];
+
 
 //var command = "java";
 //var parameter = ["-classpath", classpath ,classname];
 var command = "javac";
 var parameter = [classpath+"/"+classname+".java"];
 var child  = spawn(command, parameter);
-child.on('exit', function (code, signal) {
+
+
+  var command = "javac";
+  var parameter = [classpath+"/"+classname+".java"];
+  var child  = spawn(command, parameter);
+
+  child.on('exit', function (code, signal) {
+
+        child.kill();
+
+        if(code == 0){
+            command = "java";
+            parameter = ["-classpath", classpath ,classname];
+            var output="";
+            //lets the child message through the console
+
+            inputArr.forEach(function(item) {
+
+              console.log("item:" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, ''));
+
+              item = item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '');
+
+              var runClass=spawn(command, parameter);
+
+              runClass.stdin.setEncoding('utf-8');
+
+              runClass.stdin.write(item);
+
+              runClass.stdin.end();
+
+
+              runClass.on('exit', function (code, signal) {
+
+                  runClass.kill();
+                  rmdir.rmdir(classpath);
+                  //console.log(output);
+
+
+              })
+
+
+              runClass.stdout.on('data', function (data) {
+
+                  if(data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') === "" & item != null){
+
+                  } else {
+                    output=output+data.toString();
+                    actualOutput.push(data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
+                    //console.log(output);
+                    console.log(actualOutput);
+                  }
+
+              });
+
+              runClass.stderr.on('data', function (data) {
+                  output=output+data.toString();
+              });
+            })
+
+
+        }
+    });
+
+    //lets the child message through the console
+    child.stdout.on('data', function (data) {
+        //console.log(data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''));
+    });
+
+    child.stderr.on('data', function (data) {
+        console.log(data.toString());
+
+        rmdir.rmdir(classpath);
+
+    });
+
+
+/*child.on('exit', function (code, signal) {
+
     child.kill();
-    if(code==0)
-    {
+
+    if(code == 0){
         command = "java";
         parameter = ["-classpath", classpath ,classname];
         var output="";
@@ -70,4 +150,7 @@ child.stdout.on('data', function (data) {
 
 child.stderr.on('data', function (data) {
     console.log(data.toString());
+
+    rmdir.rmdir(classpath);
+
 });
