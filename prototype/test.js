@@ -8,7 +8,7 @@ var rmdir = require('./utils/rmdir');
 //console.log(inputArr)
 
 
-var code = fs.readFileSync('code.txt').toString();
+var code = fs.readFileSync('./package/code.txt').toString();
 var res = code.match(/[^{]*/);
 var codeTokens=res[0].trim().split(" ")
 var classname=codeTokens[codeTokens.length-1];
