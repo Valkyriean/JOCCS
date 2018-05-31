@@ -64,9 +64,9 @@ var child  = spawn(command, parameter);
               runClass.stdin.setEncoding('utf-8');
 
               runClass.stdin.write(item);
-                sleep(1000);
+                sleep(200);
 
-                runClass.stdin.end();
+              runClass.stdin.end();
 
 
               runClass.on('exit', function (code, signal) {
@@ -88,7 +88,6 @@ var child  = spawn(command, parameter);
                     actualOutput.push(data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
                     //console.log(output);
                     console.log(actualOutput);
-                      sleep(1000);
 
                   }
 
