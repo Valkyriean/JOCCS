@@ -3,8 +3,8 @@ var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
 var input = fs.readFileSync('./package/input.txt').toString();
-var inputArr = input.split("\r\n")
-inputArr.pop()
+var inputArr = input.split("\r\n");
+inputArr.pop();
 
 //var output = fs.readFileSync('')
 

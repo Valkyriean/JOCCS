@@ -2,79 +2,79 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
-var command = "python";
-var parameter = ["test.py"];
-var result = spawn(command,parameter);
+var input_0 = fs.readFileSync('input.txt').toString();
+var input_1 = input_0.split("\r\n");
+input_1.pop();
+var inputArr = [];
+var input_2 = [];
 
-var output = [[]];
+input_1.forEach(function(item) {
+  item = trimSpace(item);
+  input_2 = item.split(",");
+  inputArr.push(input_2);
+})
 
-function abc(input, time, output) {
-  var time_1 = 0;
-  var output_1 = output;
-  if (time < arr.length) {
-    var command = "python";
-    var parameter = ["test.py"];
-    var result = spwan(command, parameter);
+var code = fs.readFileSync('test.py').toString();
+var res = code.match(/input\((.*)\)/g);
+var res_0 = res[0].replace(/\((.*)\)/, '("")');
+code = code.replace(/input\((.*)\)/g, res_0);
+//console.log(code);
 
-    result.stdin.setEncoding('utf-8');
-    write(input[time_1], time_1);
+var foldername = new Date().getTime() + "_" + "python";
+var path = "compileFolder/" + foldername
+fs.mkdirSync(path);
+fs.writeFileSync(path + "/" + "python.py", code);
 
-    result.on('exit', function(code, signal) {
-      result.kill();
-      abc(input, time + 1, output_1);
-    })
+var output = [];
 
-    result.stdout.on('data', function(data) {
-      console.log(data.toString())
-    })
-
-    result.stderr.on('data', function(data) {
-      console.log(data.toString())
-    })
-
-
-  }
+function trimSpace(str) {
+  var a = str.replace(/\s/g, "");
+  return a;
 }
 
-function write(input, time) {
-  if(time < input.length) {
+function abc(input, time, result) {
+    var actualResult = result;
+    if (time < input.length) {
+        var command = "python";
+        var parameter = [path + "/python.py"];
+        var result = spawn(command, parameter);
+        var time_1 = 0;
+        var result_0 = [];
 
-        result.stdin.resume();
-        result.stdin.write("'" + input[time].toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
-        result.stdin.pause();
-        write(input, time + 1);
+        result.stdin.setEncoding('utf-8');
 
+        input[time].forEach(function(item) {
+          result.stdin.write("'" + item.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
+        })
+
+        result.stdin.end()
+
+        //write(input[time], time_1);
+
+        result.on('exit', function(code, signal) {
+          result.kill();
+          abc(input, time + 1, actualResult);
+        })
+
+        result.stdout.on('data', function(data) {
+          console.log(data.toString());
+          result_0 = data.toString().split("\r\n");
+          result_0.pop();
+          actualResult.push(result_0);
+        })
+
+        result.stderr.on('data', function(data) {
+          console.log(data.toString())
+        })
   } else {
-    result.stdin.end();
+    //return result to server
+    rmdir.rmdir(path);
+    actualResult.splice(0,1);
+    console.log(actualResult);
   }
 }
 
-result.on('exit', function(code, signal) {
-    result.kill()
-})
-
-var a = "hello";
-var input = ["hello", 2];
 var time = 0;
-var num = 0
+var result = [[]];
 
-result.stdin.setEncoding('utf-8');
-
-write(input, time);
-
-/*result.stdin.setEncoding('utf-8');
-result.stdin.write("'" + a + "'" + '\n');
-result.stdin.write("2" + '\n')
-result.stdin.end();*/
-
-
-
-result.stdout.on('data', function(data) {
-    console.log(data.toString());
-    console.log(num)
-    num += 1;
-})
-
-result.stderr.on('data', function(data) {
-    console.log(data.toString());
-})
+var a = abc(inputArr, time, result);
