@@ -2,7 +2,7 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
-var input_0 = fs.readFileSync('input.txt').toString();
+var input_0 = fs.readFileSync('./package/input.txt').toString();
 var input_1 = input_0.split("\r\n");
 input_1.pop();
 var inputArr = [];
@@ -14,7 +14,7 @@ input_1.forEach(function(item) {
   inputArr.push(input_2);
 })
 
-var output_0 = fs.readFileSync('output.txt').toString().trim();
+var output_0 = fs.readFileSync('./package/output.txt').toString().trim();
 var output_1 = input_0.split("\r\n");
 output_1.pop();
 var outputArr = [];
