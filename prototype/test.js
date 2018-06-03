@@ -38,18 +38,11 @@ function abc(arr, time, output) {
         runClass.on('exit', function(code, signal) {
             runClass.kill();
             abc(arr, time + 1, output_1);
-            //console.log("time:" + time);
         })
 
         runClass.stdout.on('data', function(data) {
-          if(data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') === "" & arr[time] != null){
-
-          } else {
+            console.log(data.toString());
             output_1.push(data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
-            //console.log(output);
-            //console.log(output_1);
-            //console.log("haha");
-          }
         })
 
         runClass.stderr.on('data', function(data) {
