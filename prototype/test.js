@@ -2,11 +2,13 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
+var input = fs.readFileSync('./package/input.txt').toString();
+var inputArr = input.split("\r\n");
+inputArr.pop();
 
-//var output = fs.readFileSync('')
-
-//console.log(inputArr)
-
+var output = fs.readFileSync('./package/output.txt').toString();
+var outputArr = output.split("\r\n");
+outputArr.pop();
 
 var code = fs.readFileSync('./package/code.txt').toString();
 var res = code.match(/[^{]*/);
@@ -20,8 +22,6 @@ fs.mkdirSync(classpath);
 fs.writeFileSync(classpath+"/"+classname+".java", code);
 //java -classpath compileFolder/test/ Test
 
-
-var inputArr = ["10","20","30"];
 var actualOutput = [];
 
 function abc(arr, time, output) {
