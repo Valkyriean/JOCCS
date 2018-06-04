@@ -2,38 +2,25 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
-var input_0 = fs.readFileSync('./package/input.txt').toString();
-var input_1 = input_0.split("\r\n");
-input_1.pop();
-var inputArr = [];
-var input_2 = [];
+var input_0 = fs.readFileSync('./TestCases/Python/Case_3/input.txt').toString();
+var inputArr = input_0.split("\r\n");
+if(inputArr.length != 0 & inputArr.length != 1) inputArr.pop();
 
-input_1.forEach(function(item) {
-  item = trimSpace(item);
-  input_2 = item.split(",");
-  inputArr.push(input_2);
-})
+var output_0 = fs.readFileSync('./TestCases/Python/Case_3/output.txt').toString();
+if(output_0.match(/\[(.*)\]/) == null){
+  var outputArr = output_0.trim().split("\r\n");
+  if(outputArr.length != 1 & outputArr.length != 0) outputArr.pop();
+} else var outputArr = output_0.trim().replace(/[\'\"\\\/\b\f\n\r\t]/g, '');
 
-var output_0 = fs.readFileSync('./package/output.txt').toString().trim();
-var output_1 = input_0.split("\r\n");
-output_1.pop();
-var outputArr = [];
-var output_2 = [];
-
-output_1.forEach(function(item) {
-  item = trimSpace(item);
-  output_2 = item.split(",");
-  outputArr.push(output_2);
-})
-
-var code = fs.readFileSync('test.py').toString();
+var code = fs.readFileSync('./TestCases/Python/Case_3/Test.py').toString();
 var res = code.match(/input\((.*)\)/g);
-var res_0 = res[0].replace(/\((.*)\)/, '("")');
-code = code.replace(/input\((.*)\)/g, res_0);
-//console.log(code);
+if(res != null) {
+  var res_0 = res[0].replace(/\((.*)\)/, '("")');
+  code = code.replace(/input\((.*)\)/g, res_0);
+}
 
 var foldername = new Date().getTime() + "_" + "python";
-var path = "compileFolder/" + foldername
+var path = "compileFolder/" + foldername;
 fs.mkdirSync(path);
 fs.writeFileSync(path + "/" + "python.py", code);
 
@@ -57,50 +44,35 @@ function isEqual(arr_1, arr_2) {
   };
 };
 
-function abc(input, time, result) {
-    var actualResult = result;
-    if (time < input.length) {
-        var command = "python";
-        var parameter = [path + "/python.py"];
+var output = [""]
+var command = "python";
+var parameter = [path + "/python.py"];
         var result = spawn(command, parameter);
         var time_1 = 0;
         var result_0 = [];
 
         result.stdin.setEncoding('utf-8');
-
-        input[time].forEach(function(item) {
-          result.stdin.write("'" + item.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
+        inputArr.forEach(function(item) {
+          result.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
         })
-
         result.stdin.end()
-
-        //write(input[time], time_1);
 
         result.on('exit', function(code, signal) {
           result.kill();
-          abc(input, time + 1, actualResult);
+          rmdir.rmdir(path);
+          var equal = isEqual(output, outputArr);
+          console.log(equal);
         })
 
         result.stdout.on('data', function(data) {
           console.log(data.toString());
-          result_0 = data.toString().split("\r\n");
-          result_0.pop();
-          actualResult.push(result_0);
+          if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
+              output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '').split("\r\n")
+              output.pop();
+          } else output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '')
         })
 
         result.stderr.on('data', function(data) {
           console.log(data.toString())
+          rmdir.rmdir(path);
         })
-  } else {
-    //return result to server
-    rmdir.rmdir(path);
-    actualResult.splice(0,1);
-    var equal = isEqual(actualResult, outputArr);
-    console.log(equal);
-  }
-}
-
-var time = 0;
-var result = [[]];
-
-var a = abc(inputArr, time, result);
