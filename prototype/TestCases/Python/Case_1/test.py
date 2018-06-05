@@ -1,7 +1,4 @@
-a = input("first number");
-b = input("second number");
-
-a = int(a)
-b = int(b)
+a = int(input("first number"));
+b = int(input("second number"));
 
 print(a + b);
