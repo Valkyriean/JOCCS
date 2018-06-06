@@ -65,8 +65,6 @@ function runPython(inputArr, outputArr, code) {
   result.on('exit', function(code, signal) {
       result.kill();
       rmdir.rmdir(path);
-      output = trimSpace(output);
-      outputArr = trimSpace(output);
       var equal = isEqual(output, outputArr);
       console.log(equal);
   })
