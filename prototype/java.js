@@ -2,11 +2,6 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
-if(inputArr.length != 1 & inputArr.length != 0) inputArr.pop();
-
-var output = fs.readFileSync('./TestCases/Java/Case_1/output.txt').toString();
-if(output.match(/\[(.*)\]/) == null){
- var outputArr = output.trim().split("\r\n");
 // var code = fs.readFileSync('./TestCases/Java/Case_1/test.txt').toString();
 // var res = code.match(/[^{]*/);
 // var codeTokens=res[0].trim().split(" ")
