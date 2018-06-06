@@ -1,6 +1,7 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
+var isEqual = require('./utils/functions').isEqual;
 
 // var code = fs.readFileSync('./TestCases/Java/Case_1/test.txt').toString();
 // var res = code.match(/[^{]*/);

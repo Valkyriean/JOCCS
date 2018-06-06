@@ -1,6 +1,7 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
+var isEqual = require('./utils/functions').isEqual;
 
 // var input_0 = fs.readFileSync('./TestCases/Python/Case_4/input.txt').toString();
 // var inputArr = input_0.split("\r\n");
@@ -26,20 +27,6 @@ function trimSpace(str) {
   var a = str.replace(/\s/g, "");
   return a;
 }
-
-function isEqual(arr_1, arr_2) {
-  if(typeof(arr_1) == 'string' & typeof(arr_2) == 'string') return arr_1 == arr_2;
-  if(arr_1.length != arr_2.length) return false;
-  if(typeof(arr_1[0]) == 'string' & typeof(arr_2[0]) == 'string') {
-    for(var i = 0; i < arr_1.length; i ++) {
-      if(arr_1[i] != arr_2[i]) return false;
-    }
-    return true;
-  } else {
-      for(var i = 0; i < arr_1.length; i ++) {a = isEqual(arr_1[i],arr_2[i])};
-      return a;
-  };
-};
 
 function runPython(inputArr, outputArr, code) {
 
