@@ -1,15 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var compile = require('../controllers/compile/compile');
+var compare = require('../controllers/compile/compare');
 
-/* GET home page. */
-router.post('/', function(req, res, next) {
-    if(req.body.language === 'java'){
-        router.post('/', )
-    }else if(req.body.language === 'python'){
-        router.post('/', )
-    }else{
-        //going to error response
-    }
-});
+router.post('/compare', compile.compile, compare.compare);
 
 module.exports = router;
