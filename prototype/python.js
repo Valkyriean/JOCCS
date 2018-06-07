@@ -22,6 +22,7 @@ function runPython(inputArr, outputArr, code) {
   var command = "python";
   var parameter = [path + "/python.py"];
   var result = spawn(command, parameter);
+  var output;
 
   result.stdin.setEncoding('utf-8');
   inputArr.forEach(function(item) {
@@ -32,8 +33,10 @@ function runPython(inputArr, outputArr, code) {
   result.on('exit', function(code, signal) {
       result.kill();
       rmdir.rmdir(path);
-      var equal = isEqual(output, outputArr);
-      console.log(equal);
+      return output;
+      //var equal = isEqual(output, outputArr);
+      // console.log(equal);
+      // return equal;
   })
 
   result.stdout.on('data', function(data) {
@@ -46,6 +49,7 @@ function runPython(inputArr, outputArr, code) {
 
   result.stderr.on('data', function(data) {
       console.log(data.toString())
+      output = data.toString();
       rmdir.rmdir(path);
   })
 }
