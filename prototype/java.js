@@ -40,7 +40,7 @@ function runJava(inputArr, outputArr, code) {
             });
 
             runClass.stdout.on('data', function (data) {
-                console.log(data.toString());
+                //console.log(data.toString());
                 if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
                     output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '').split("\r\n")
                     if(output.length != 1 & output.length != 0) output.pop();
@@ -48,7 +48,7 @@ function runJava(inputArr, outputArr, code) {
             });
 
             runClass.stderr.on('data', function (data) {
-                console.log(data.toString());
+                //console.log(data.toString());
                 output = data.toString();
                 rmdir.rmdir(path);
             });
@@ -57,11 +57,11 @@ function runJava(inputArr, outputArr, code) {
 
     //lets the child message through the console
     child.stdout.on('data', function (data) {
-        console.log(data.toString());
+        //console.log(data.toString());
     });
 
     child.stderr.on('data', function (data) {
-        console.log(data.toString());
+        //console.log(data.toString());
         output = data.toString();
         rmdir.rmdir(classpath);
     });

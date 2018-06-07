@@ -40,7 +40,7 @@ function runPython(inputArr, outputArr, code) {
   })
 
   result.stdout.on('data', function(data) {
-      console.log(data.toString());
+      //console.log(data.toString());
       if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
           output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '').split("\r\n")
           if(output.length != 1 & output.length != 0) output.pop();
@@ -48,7 +48,7 @@ function runPython(inputArr, outputArr, code) {
   });
 
   result.stderr.on('data', function(data) {
-      console.log(data.toString())
+      //console.log(data.toString())
       output = data.toString();
       rmdir.rmdir(path);
   })

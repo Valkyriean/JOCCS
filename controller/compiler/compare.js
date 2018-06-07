@@ -6,4 +6,5 @@ exports.compare = function(req, res) {
      'result': req.result,
      'status': result
    });
+   next();
 }
