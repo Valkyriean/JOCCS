@@ -3,30 +3,6 @@ var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 var isEqual = require('./utils/functions').isEqual;
 
-// var code = fs.readFileSync('./TestCases/Java/Case_1/test.txt').toString();
-// var res = code.match(/[^{]*/);
-// var codeTokens=res[0].trim().split(" ")
-// var classname=codeTokens[codeTokens.length-1];
-//
-// var input = fs.readFileSync('./TestCases/Java/Case_1/input.txt').toString();
-// var inputArr = input.trim().split("\r\n");
-// if(inputArr.length != 1 & inputArr.length != 0) inputArr.pop();
-//
-// var output = fs.readFileSync('./TestCases/Java/Case_1/output.txt').toString();
-// if(output.match(/\[(.*)\]/) == null){
-//  var outputArr = output.trim().split("\r\n");
-//  if(outputArr.length != 1 & outputArr.length != 0) outputArr.pop();
-// } else var outputArr = output.trim().replace(/[\'\"\\\/\b\f\n\r\t]/g, '');
-//
-// var foldername=new Date().getTime()+"_"+classname;
-// var classpath="compileFolder/"+foldername
-// fs.mkdirSync(classpath);
-// fs.writeFileSync(classpath+"/"+classname+".java", code);
-//
-// var command = "javac";
-// var parameter = [classpath+"/"+classname+".java"];
-// var child  = spawn(command, parameter);
-
 function runJava(inputArr, outputArr, code) {
   var res = code.match(/[^{]*/);
   var codeTokens=res[0].trim().split(" ")
@@ -83,3 +59,5 @@ function runJava(inputArr, outputArr, code) {
         rmdir.rmdir(classpath);
     });
 }
+
+exports.runJava = runJava;

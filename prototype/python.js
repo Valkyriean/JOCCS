@@ -3,26 +3,6 @@ var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 var isEqual = require('./utils/functions').isEqual;
 
-// var input_0 = fs.readFileSync('./TestCases/Python/Case_4/input.txt').toString();
-// var inputArr = input_0.split("\r\n");
-// if(inputArr.length != 0 & inputArr.length != 1) inputArr.pop();
-//
-// var output_0 = fs.readFileSync('./TestCases/Python/Case_4/output.txt').toString();
-// if(output_0.match(/\[(.*)\]/) == null){
-//   var outputArr = output_0.trim().split("\r\n");
-//   if(outputArr.length != 1 & outputArr.length != 0) outputArr.pop();
-// } else var outputArr = output_0.replace(/[\'\"\\\/\b\f\n\r\t]/g, '');
-//
-// var code = fs.readFileSync('./TestCases/Python/Case_4/Test.py').toString();
-// if(code.match(/input\((.*)\)?/g) != null) {
-//   code = code.replace(/input\((.*[^\)])\)/g, 'input("")');
-// };
-//
-// var foldername = new Date().getTime() + "_" + "python";
-// var path = "compileFolder/" + foldername;
-// fs.mkdirSync(path);
-// fs.writeFileSync(path + "/" + "python.py", code);
-
 function trimSpace(str) {
   var a = str.replace(/\s/g, "");
   return a;
@@ -69,3 +49,5 @@ function runPython(inputArr, outputArr, code) {
       rmdir.rmdir(path);
   })
 }
+
+exports.runPython = runPython;
