@@ -27,9 +27,9 @@ function runJava(inputArr, outputArr, code) {
             //lets the child message through the console
 
             runClass.stdin.setEncoding('utf-8');
-
-            runClass.stdin.write(inputArr[0] + "\n");
-
+            inputArr.forEach(function(item) {
+              result.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
+            })
             runClass.stdin.end();
 
             runClass.on('exit', function (code, signal) {
