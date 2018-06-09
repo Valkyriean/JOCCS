@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
-var apiRouter = require('./routes/api')
+var apiRouter = require('./routes/api');
 
 var app = express();
 app.listen(3000);
@@ -40,5 +40,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+console.log("Yes, I am running");
 
 module.exports = app;
