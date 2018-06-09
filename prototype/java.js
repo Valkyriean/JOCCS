@@ -2,7 +2,7 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 
-var runJava = function(inputArr, outputArr, code){
+var runJava = function(inputArr, code){
   var res = code.match(/[^{]*/);
   var codeTokens=res[0].trim().split(" ")
   var classname=codeTokens[codeTokens.length-1];

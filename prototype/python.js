@@ -8,7 +8,7 @@ function trimSpace(str) {
   return a;
 }
 
-function runPython(inputArr, outputArr, code) {
+function runPython(inputArr, code) {
 
   if(code.match(/input\((.*)\)?/g) != null) {
     code = code.replace(/input\((.*[^\)])\)/g, 'input("")');

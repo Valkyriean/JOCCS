@@ -5,13 +5,13 @@ exports.compile = function(req,res) {
     var result;
     var status;
     if(req.body.language === 'java'){
-        result = runJava(req.body.input, req.body.output, req.body.code);
+        result = runJava(req.body.input, req.body.code);
         status = "success";
     }else if(req.body.language === 'python'){
-        result = runPython(req.body.input, req.body.output, req.body.code);
+        result = runPython(req.body.input, req.body.code);
         status = "success";
     }else{
-        res.json({"status": "wUnsupported language"});
+        res.json({"status": "Unsupported language"});
     }
     req.result = result;
     next();
@@ -21,10 +21,10 @@ exports.onlyCompile = function(req, res) {
     var result;
     var status;
     if(req.body.language === 'java'){
-      result = runJava(req.body.input, req.body.output, req.body.code);
+      result = runJava(req.body.input, req.body.code);
       status = "success";
     }else if(req.body.language === 'python'){
-      result = runPython(req.body.input, req.body.output, req.body.code);
+      result = runPython(req.body.input, req.body.code);
       status = "success";
     }else{
       status = "Unsupported language";
