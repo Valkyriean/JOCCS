@@ -19,7 +19,7 @@ var runJava = function(inputArr, code){
   console.log("input" + inputArr);
 
   child.on('exit', function (code, signal) {
-        var output;
+        var output = [""];
         child.kill();
         if(code == 0){
             command = "java";
@@ -27,7 +27,7 @@ var runJava = function(inputArr, code){
             var runClass=spawn(command, parameter);
             //lets the child message through the console
             runClass.stdin.setEncoding('utf-8');
-            if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
+            if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
             else {
               inputArr.forEach(function(item) {
                 runClass.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
@@ -38,6 +38,8 @@ var runJava = function(inputArr, code){
             runClass.on('exit', function (code, signal) {
                 runClass.kill();
                 rmdir.rmdir(classpath);
+                output.splice(0,1);
+                console.log(output);
                 return output;
                 //return isEqual(outputArr, output);
             });
@@ -45,10 +47,11 @@ var runJava = function(inputArr, code){
             runClass.stdout.on('data', function (data) {
                 //console.log(data.toString());
                 if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
-                    output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '').split("\r\n")
-                    if(output.length != 1 & output.length != 0) output.pop();
+                    output.push(data.toString().replace(/[\'\"\\\/\b\f\t]/g, '').split("\r\n"))
+                    //if(output.length != 1 & output.length != 0) output.pop();
                 } else output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '')
-                console.log("output" + output);
+                console.log(output)
+                console.log("a")
             });
 
             runClass.stderr.on('data', function (data) {
