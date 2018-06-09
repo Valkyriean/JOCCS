@@ -8,7 +8,7 @@ var runJava = function(inputArr, code){
   var classname=codeTokens[codeTokens.length-1];
 
   var foldername=new Date().getTime()+"_"+classname;
-  var classpath="compileFolder/"+foldername
+  var classpath="./"+foldername
   fs.mkdirSync(classpath);
   fs.writeFileSync(classpath+"/"+classname+".java", code);
 
@@ -26,10 +26,10 @@ var runJava = function(inputArr, code){
             //lets the child message through the console
 
             runClass.stdin.setEncoding('utf-8');
-            if(typeof(inputArr) != 'object') result.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
+            if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
             else {
               inputArr.forEach(function(item) {
-                result.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
+                runClass.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
               })
             }
             runClass.stdin.end();

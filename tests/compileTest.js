@@ -12,9 +12,9 @@ describe('Compile Test',() =>{
             .post('/compile')
             .send({"input":"test", "language":"java", "code":"import java.util.Scanner;public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);System.out.println(s.next()); }}"})
             .end((err, res) => {
-                // res.body.should.have.status("success");
-                // res.body.should.have.result("test");
-                // res.body.result.should.have("test");
+                res.body.should.have.status("success");
+                //res.body.result.should.have("test");
+                //res.body.should.have.result("test");
                 done();
             });
     });
