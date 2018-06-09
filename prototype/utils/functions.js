@@ -13,4 +13,9 @@ var isEqual = function(arg_1, arg_2) {
   };
 }
 
+var trimSpace = function(str) {
+    return str.replace(/\s/, "");
+}
+
 exports.isEqual = isEqual;
+exports.trimSpace = trimSpace;

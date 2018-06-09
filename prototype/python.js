@@ -1,7 +1,7 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
-var isEqual = require('./utils/functions').isEqual;
+//var isEqual = require('./utils/functions').isEqual;
 
 function trimSpace(str) {
   var a = str.replace(/\s/g, "");
@@ -34,9 +34,6 @@ function runPython(inputArr, outputArr, code) {
       result.kill();
       rmdir.rmdir(path);
       return output;
-      //var equal = isEqual(output, outputArr);
-      // console.log(equal);
-      // return equal;
   })
 
   result.stdout.on('data', function(data) {
@@ -51,6 +48,7 @@ function runPython(inputArr, outputArr, code) {
       //console.log(data.toString())
       output = data.toString();
       rmdir.rmdir(path);
+      return output;
   })
 }
 

@@ -1,9 +1,8 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
-var isEqual = require('./utils/functions').isEqual;
 
-function runJava(inputArr, outputArr, code) {
+var runJava = function(inputArr, outputArr, code){
   var res = code.match(/[^{]*/);
   var codeTokens=res[0].trim().split(" ")
   var classname=codeTokens[codeTokens.length-1];
@@ -35,7 +34,7 @@ function runJava(inputArr, outputArr, code) {
             runClass.on('exit', function (code, signal) {
                 runClass.kill();
                 rmdir.rmdir(classpath);
-                return result;
+                return output;
                 //return isEqual(outputArr, output);
             });
 
@@ -51,6 +50,7 @@ function runJava(inputArr, outputArr, code) {
                 //console.log(data.toString());
                 output = data.toString();
                 rmdir.rmdir(path);
+                return outpu;
             });
         }
     });
@@ -64,6 +64,7 @@ function runJava(inputArr, outputArr, code) {
         //console.log(data.toString());
         output = data.toString();
         rmdir.rmdir(classpath);
+        return output;
     });
 }
 
