@@ -53,7 +53,7 @@ var runJava = function(inputArr, outputArr, code){
                 //console.log(data.toString());
                 output = data.toString();
                 rmdir.rmdir(path);
-                return outpu;
+                return output;
             });
         }
     });
