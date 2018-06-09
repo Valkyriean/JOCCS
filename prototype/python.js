@@ -25,9 +25,12 @@ function runPython(inputArr, outputArr, code) {
   var output;
 
   result.stdin.setEncoding('utf-8');
-  inputArr.forEach(function(item) {
-    result.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
-  })
+  if(typeof(inputArr) != 'object') result.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
+  else {
+    inputArr.forEach(function(item) {
+      result.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
+    })
+  }
   result.stdin.end()
 
   result.on('exit', function(code, signal) {
