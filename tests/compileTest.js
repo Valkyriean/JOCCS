@@ -1,6 +1,7 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let should = chai.should();
+let expect = chai.expect;
 
 chai.use(chaiHttp);
 
@@ -14,7 +15,7 @@ describe('Compile Test',() =>{
             .end((err, res) => {
                 res.body.should.have.status("success");
                 //res.body.result.should.have("test");
-                //res.body.should.have.result("test");
+                //expect(res.body).to.have.a.property({'result': 'test'})
                 done();
             });
     });

@@ -16,6 +16,8 @@ var runJava = function(inputArr, code){
   var parameter = [classpath+"/"+classname+".java"];
   var child  = spawn(command, parameter);
 
+  console.log("input" + inputArr);
+
   child.on('exit', function (code, signal) {
         var output;
         child.kill();
@@ -24,9 +26,8 @@ var runJava = function(inputArr, code){
             parameter = ["-classpath", classpath ,classname];
             var runClass=spawn(command, parameter);
             //lets the child message through the console
-
             runClass.stdin.setEncoding('utf-8');
-            if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
+            if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
             else {
               inputArr.forEach(function(item) {
                 runClass.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
@@ -47,6 +48,7 @@ var runJava = function(inputArr, code){
                     output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '').split("\r\n")
                     if(output.length != 1 & output.length != 0) output.pop();
                 } else output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '')
+                console.log("output" + output);
             });
 
             runClass.stderr.on('data', function (data) {
