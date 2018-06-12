@@ -11,7 +11,10 @@ describe('Compile Test',() =>{
     it('student signup', (done) => {
         chai.request(endPoint)
             .post('/compile')
-            .send({"input":"test", "language":"java", "code":"import java.util.Scanner;public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);String a = s.nextLine();System.out.println(a);System.out.println(a);}}"})
+            .send({
+              "input":["test","aaa"],
+              "language":"java",
+              "code":"/**abc*/import java.util.Scanner;/*aaa*/public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);String a = s.nextLine();String b = s.nextLine();System.out.println(a); System.out.println(b);}}"})
             .end((err, res) => {
                 res.body.should.have.status("success");
                 //res.body.result.should.have("test");

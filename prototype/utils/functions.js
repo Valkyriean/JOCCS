@@ -13,9 +13,20 @@ var isEqual = function(arg_1, arg_2) {
   };
 }
 
+var 　toSingleArray = function(arr, result) {
+    if(typeof(arr) == 'object') {
+      arr.forEach(function(item) {
+        if(typeof(item) != 'object') result.push(item);
+        else toSingleArray(item, result);
+      })
+    }
+    return result
+}
+
 var trimSpace = function(str) {
     return str.replace(/\s/, "");
 }
 
 exports.isEqual = isEqual;
 exports.trimSpace = trimSpace;
+exports.toSingle = toSingleArray;

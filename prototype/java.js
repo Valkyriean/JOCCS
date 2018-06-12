@@ -1,8 +1,17 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
+var toSingle = require('./utils/functions').toSingle;
 
 var runJava = function(inputArr, code){
+
+  console.log(code.match(/\/\*(\s|.)*?\*\//g));
+  code = code.replace(/\/\*(\s|.)*?\*\//g, "");
+  console.log(code);
+
+  var time = code.match(/\.println\(([a-z]*[A-Z]*[0-9]*)\)/g).length
+  console.log(time);
+
   var res = code.match(/[^{]*/);
   var codeTokens=res[0].trim().split(" ")
   var classname=codeTokens[codeTokens.length-1];
@@ -27,7 +36,7 @@ var runJava = function(inputArr, code){
             var runClass=spawn(command, parameter);
             //lets the child message through the console
             runClass.stdin.setEncoding('utf-8');
-            if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
+            if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
             else {
               inputArr.forEach(function(item) {
                 runClass.stdin.write("'" + item.replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
@@ -38,26 +47,31 @@ var runJava = function(inputArr, code){
             runClass.on('exit', function (code, signal) {
                 runClass.kill();
                 rmdir.rmdir(classpath);
-                output.splice(0,1);
+                if(typeof(output) == 'object') {
+                  var arr = [""]
+                  output = toSingle(output, arr);
+                  output.splice(0,2);
+                  while(output.length != time) {
+                    output.pop();
+                  }
+                }
                 console.log(output);
                 return output;
-                //return isEqual(outputArr, output);
             });
 
             runClass.stdout.on('data', function (data) {
                 //console.log(data.toString());
                 if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
-                    output.push(data.toString().replace(/[\'\"\\\/\b\f\t]/g, '').split("\r\n"))
+                    output.push(data.toString().trim().replace(/[\'\"\\\/\b\f\t\r]/g, '').split("\n"))
                     //if(output.length != 1 & output.length != 0) output.pop();
                 } else output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '')
-                console.log(output)
-                console.log("a")
+                //console.log(output)
             });
 
             runClass.stderr.on('data', function (data) {
                 //console.log(data.toString());
                 output = data.toString();
-                rmdir.rmdir(path);
+                rmdir.rmdir(classpath);
                 return output;
             });
         }
