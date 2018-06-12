@@ -5,12 +5,11 @@ var toSingle = require('./utils/functions').toSingle;
 
 var runJava = function(inputArr, code){
 
-  console.log(code.match(/\/\*(\s|.)*?\*\//g));
   code = code.replace(/\/\*(\s|.)*?\*\//g, "");
-  console.log(code);
+  //console.log(code);
 
-  var time = code.match(/\.println\(([a-z]*[A-Z]*[0-9]*)\)/g).length
-  console.log(time);
+  var time = code.match(/\.println\((\s|.)*?\)/g).length
+  //console.log(time);
 
   var res = code.match(/[^{]*/);
   var codeTokens=res[0].trim().split(" ")
@@ -25,7 +24,7 @@ var runJava = function(inputArr, code){
   var parameter = [classpath+"/"+classname+".java"];
   var child  = spawn(command, parameter);
 
-  console.log("input" + inputArr);
+  //console.log("input" + inputArr);
 
   child.on('exit', function (code, signal) {
         var output = [""];
