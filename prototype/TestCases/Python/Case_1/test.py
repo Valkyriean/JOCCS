@@ -1,4 +1,3 @@
-a = int(input("first number"));
-b = int(input("second number"));
+a = input("first number");
 
-print(a + b);
+print(a);
