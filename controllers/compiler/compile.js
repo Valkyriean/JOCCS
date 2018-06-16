@@ -1,41 +1,47 @@
-var runJava = require('../../prototype/java').runJava;
-var runPython = require('../../prototype/python').runPython;
+//var runJava = require('../../prototype/java').runJava;
+//var runPython = require('../../prototype/python').runPython;
 var fork = require('child_process').fork
 
-exports.compile = function(req,res) {
-    var result;
-    var status;
+exports.compile = function(req,res,next) {
     if(req.body.language === 'java'){
-        result = runJava(req.body.input, req.body.code);
-        status = "success";
+        var child = fork('prototype/java.js')
+        child.on('message', function(data) {
+          child.kill()
+          req.result = data.result;
+          next();
+        })
+        child.send({input: req.body.input, code: req.body.code});
     }else if(req.body.language === 'python'){
-        result = runPython(req.body.input, req.body.code);
-        status = "success";
+        var child = fork('prototype/python.js');
+        child.on('message', function(data) {
+          child.kill()
+          req.result = data.result;
+          next();
+        })
+        child.send({input: req.body.input, code: req.body.code});
     }else{
         res.json({"status": "Unsupported language"});
     }
-    req.result = result;
-    next();
 }
 
 exports.onlyCompile = function(req, res) {
     var result;
     var status;
     if(req.body.language === 'java'){
-      var child = fork('prototype/test.js')
+      var child = fork('prototype/java.js')
       child.on('message', function(data) {
-        console.log(data.message)
         child.kill()
-        res.json({'status': data.message})
+        res.json({'result': data.result, 'status': "success"})
       })
-      child.send({hello: "hello"})
-      //result = runJava(req.body.input, req.body.code);
-      status = "success";
-    }else if(req.body.language === 'python'){
-      result = runPython(req.body.input, req.body.code);
-      status = "success";
-    }else{
-      status = "Unsupported language";
-    }
-    //res.json({"status": status, 'result': result});
-}
+      child.send({input: req.body.input, code: req.body.code});
+    } else if(req.body.language === 'python'){
+      var child = fork('prototype/python.js');
+      child.on('message', function(data) {
+        child.kill()
+        res.json({'result': data.result, 'status': "success"});
+      });
+      child.send({input: req.body.input, code: req.body.code});
+    } else{
+      res.json({'status': "unsupported language"});
+    };
+};
