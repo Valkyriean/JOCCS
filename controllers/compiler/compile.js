@@ -44,10 +44,8 @@ exports.compile = function(req,res,next) {
 
 exports.onlyCompile = function(req, res) {
 
-    var result;
-    var status;
-
     var child_2 = fork('prototype/test2.js');
+
     child_2.on('message', function(data) {
       child.kill();
       child_2.kill();
