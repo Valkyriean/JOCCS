@@ -1,3 +1,5 @@
-a = input("first number");
+a = 1
+while a >0:
+    a += 1
 
-print(a);
+print(a)

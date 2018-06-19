@@ -5,7 +5,7 @@ var spawn = require('child_process').spawn;
 var result = "a"
 
 process.on('message', function(data) {
-  var child = spawn("python", ["../../prototype/TestCases/Python/Case_1/test.py"])
+  var child = spawn("python", ["TestCases/Python/Case_1/test.py"])
 
   child.on('exit', function(code, signal) {
       child.kill();

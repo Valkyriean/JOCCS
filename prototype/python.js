@@ -48,8 +48,8 @@ process.on('message', function(data) {
       });
 
       result.stderr.on('data', function(data) {
-          //console.log(data.toString())
-          output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '');
+          console.log(data.toString())
+          output = data.toString().replace(/[\'\"\\\/\b\f\r\t]/g, '');
           rmdir.rmdir(path);
           process.send({result: output});
       })
