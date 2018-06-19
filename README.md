@@ -1,26 +1,34 @@
-# JOCCS
-#Java (&Python) Online Compile & Compare System
+# Java (&Python) Online Compile & Compare System
 
 Documentation：
 
 Endpoints:
 
-http://localhost:3000/api/compare
-Get {input, output, code, language}
-post {status, result}
-status: <True> when students output same as preset Output
-        <False> when failed to compile or output are different
-result: The output of code if success
+http://localhost:3000/api/compare<br />
+Get {input, output, code, language}<br />
+post {status, result}<br />
 
-http://localhost:3000/api/compile
-Get {input, code, language}
-post {status, result(Output to string)}
-status: "success" when compiled successfully
-        "taking too much time"
-        "Unsupported language"
-result: The output of code if success
+status: <br />
+<True> when students output same as preset Output<br />
+<False> when failed to compile or output are different<br />
 
-<> for Boolean
-"" for String
+result: <br />
+The output of code if success<br />
+<br />
+
+http://localhost:3000/api/compile<br />
+Get {input, code, language}<br />
+post {status, result(Output to string)}<br />
+
+status: <br />
+"success" when compiled successfully<br />
+"taking too much time"<br />
+"Unsupported language"<br />
+
+result: <br />
+The output of code if success<br />
+
+<> for Boolean<br />
+"" for String<br />
 
 Made by Group Akiraku (あきらく)
