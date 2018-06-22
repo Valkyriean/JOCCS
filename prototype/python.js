@@ -12,8 +12,8 @@ process.on('message', function(data) {
         code = code.replace(/input\((.*[^\)])\)/g, 'input("")');
       };
 
-      var foldername = new Date().getTime() + "_" + "python";
-      var path = "./" + foldername;
+      var foldername = data.date + "_" + "python";
+      var path = "./prototype/compileFolder/" + foldername;
       fs.mkdirSync(path);
       fs.writeFileSync(path + "/" + "python.py", code);
 

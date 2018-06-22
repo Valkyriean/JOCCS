@@ -1,14 +1,19 @@
-//var runJava = require('../../prototype/java').runJava;
-//var runPython = require('../../prototype/python').runPython;
 var fork = require('child_process').fork
+var rmdir = require('../../prototype/utils/rmdir');
 
 exports.compile = function(req,res,next) {
 
+    var date = new Date().getTime() + "";
     var child_2 = fork('prototype/test2.js')
 
     child_2.on('message', function(data) {
       child.kill();
       child_2.kill();
+      if(req.body.language == 'java') {
+        rmdir.rmdir("./prototype/compileFolder/" + date + "_java")
+      } else {
+        rmdir.rmdir("./prototype/compileFolder/" + date + "_python")
+      }
       res.json({'status': data.message});
     })
     child_2.send({time: 5000});
@@ -23,7 +28,7 @@ exports.compile = function(req,res,next) {
           req.result = data.result;
           next();
         });
-        child.send({input: req.body.input, code: req.body.code});
+        child.send({input: req.body.input, code: req.body.code, date: date});
 
     } else if(req.body.language === 'python'){
 
@@ -35,9 +40,10 @@ exports.compile = function(req,res,next) {
           req.result = data.result;
           next();
         })
-        child.send({input: req.body.input, code: req.body.code});
+        child.send({input: req.body.input, code: req.body.code, date: date});
 
     }else{
+        child_2.kill()
         res.json({"status": "Unsupported language"});
     }
 }
@@ -45,12 +51,20 @@ exports.compile = function(req,res,next) {
 exports.onlyCompile = function(req, res) {
 
     var child_2 = fork('prototype/test2.js');
+    var date = new Date().getTime() + ""
+    //console.log(date);
 
     child_2.on('message', function(data) {
       child.kill();
       child_2.kill();
+      if(req.body.language == 'java') {
+        rmdir.rmdir("./prototype/compileFolder/" + date + "_java")
+      } else {
+        rmdir.rmdir("./prototype/compileFolder/" + date + "_python")
+      }
       res.json({'status': data.message});
     })
+    child_2.send({time: 5000})
 
     if(req.body.language === 'java'){
 
@@ -61,7 +75,7 @@ exports.onlyCompile = function(req, res) {
         child_2.kill();
         res.json({'result': data.result, 'status': "success"})
       })
-      child.send({input: req.body.input, code: req.body.code});
+      child.send({input: req.body.input, code: req.body.code, date: date});
 
     } else if(req.body.language === 'python'){
 
@@ -71,10 +85,11 @@ exports.onlyCompile = function(req, res) {
         child.kill()
         res.json({'result': data.result, 'status': "success"});
       });
-      child.send({input: req.body.input, code: req.body.code});
+      child.send({input: req.body.input, code: req.body.code, date: date});
 
     } else{
 
+      child_2.kill();
       res.json({'status': "unsupported language"});
 
     };

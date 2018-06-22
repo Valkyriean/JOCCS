@@ -9,14 +9,15 @@ process.on('message', function(data) {
 
       code = code.replace(/\/\*(\s|.)*?\*\//g, "");
 
-      var time = code.match(/\.println\((\s|.)*?\)/g).length
+      var time = 0;
+      if(code.match(/\.println\((\s|.)*?\)/g) != null) time = code.match(/\.println\((\s|.)*?\)/g).length
 
       var res = code.match(/[^{]*/);
-      var codeTokens=res[0].trim().split(" ")
-      var classname=codeTokens[codeTokens.length-1];
+      var codeTokens = res[0].trim().split(" ")
+      var classname = codeTokens[codeTokens.length-1];
 
-      var foldername=new Date().getTime()+"_"+classname;
-      var classpath="./"+foldername
+      var foldername = data.date + "_" + "java";
+      var classpath = "./prototype/compileFolder/"+foldername
       fs.mkdirSync(classpath);
       fs.writeFileSync(classpath+"/"+classname+".java", code);
 
@@ -75,6 +76,7 @@ process.on('message', function(data) {
         //lets the child message through the console
         child.stdout.on('data', function (data) {
             //console.log(data.toString());
+            process.send({result: data.toString().replace(/[\'\"\\\/\b\f\t\r]/g, '')})
         });
 
         child.stderr.on('data', function (data) {
