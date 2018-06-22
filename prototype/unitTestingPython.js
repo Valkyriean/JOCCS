@@ -1,7 +1,6 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
-var toSingle = require('./utils/functions').toSingle;
 
 process.on('message', function(data) {
 
@@ -28,10 +27,12 @@ process.on('message', function(data) {
     });
 
     child.stdout.on('data', function(data) {
-        output = data.toString().replace(/[\'\"\\\/\b\f\r\t]/g, "");
+        output = data.toString().replace(/[\b\f\r\t]/g, "");
     });
 
     child.stderr.on('data', function(data) {
-        output = data.toString().replace(/[\'\"\\\/\b\f\r\t]/g, "");
+        output = data.toString().replace(/[\b\f\r\t]/g, "");
+        rmdir.rmdir(path);
+        process.send({result: result});
     });
 });
