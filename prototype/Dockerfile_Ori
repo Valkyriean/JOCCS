@@ -10,6 +10,5 @@ ARG buildtime_env=production
 ENV NODE_ENV=$buildtime_env
 
 WORKDIR $HOME
-RUN npm install
-
-CMD node $HOME/app.js
+CMD
+CMD node $HOME/bin/www

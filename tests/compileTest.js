@@ -5,10 +5,14 @@ let expect = chai.expect;
 
 chai.use(chaiHttp);
 
-let endPoint = "http://localhost:3000/api/compiler";
+//use this for testing on docker
+let endPoint = "192.168.99.100:3000/api/compiler";
+
+//use this for testing locally
+// let endPoint = "http://localhost:3000/api/compiler";
 
 describe('Compile Test',() =>{
-    it('student signup', (done) => {
+    it('Compile', (done) => {
         chai.request(endPoint)
             .post('/compile')
             .send({
