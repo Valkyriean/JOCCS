@@ -4,7 +4,7 @@ var rmdir = require('../../prototype/utils/rmdir');
 exports.compile = function(req,res,next) {
 
     var date = new Date().getTime() + "";
-    var child_2 = fork('prototype/test2.js')
+    var child_2 = fork('prototype/processTime.js')
 
     child_2.on('message', function(data) {
       child.kill();

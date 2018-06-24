@@ -30,7 +30,7 @@ process.on('message', function(data) {
             child.kill();
             if(code == 0){
                 command = "java";
-                parameter = ["-classpath", classpath ,classname];
+                parameter = ["-classpath", classpath, classname];
                 var runClass=spawn(command, parameter);
                 //lets the child message through the console
                 runClass.stdin.setEncoding('utf-8');
@@ -49,7 +49,7 @@ process.on('message', function(data) {
                       var arr = [""]
                       output = toSingle(output, arr);
                       output.splice(0,2);
-                      while(output.length != time) {
+                      while(output.length > time) {
                         output.pop();
                       }
                     }
@@ -57,16 +57,16 @@ process.on('message', function(data) {
                     process.send({result: output})
                 });
 
-                runClass.stdout.on('data', function (data) {
+                runClass.stdout.on('data', function(data) {
                     if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
-                        output.push(data.toString().trim().replace(/[\b\f\t\r]/g, '').split("\n"))
+                        output.push(data.toString().trim().replace(/[\'\"\\\/\b\f\t\r]/g, '').split("\n"))
                         //if(output.length != 1 & output.length != 0) output.pop();
-                    } else output = data.toString().replace(/[\b\f\n\r\t]/g, '')
+                    } else output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '')
                 });
 
-                runClass.stderr.on('data', function (data) {
+                runClass.stderr.on('data', function(data) {
                     //console.log(data.toString());
-                    output = data.toString().replace(/[\b\f\t\r]/g, '');
+                    output = data.toString().replace(/[\'\"\\\/\b\f\t\r]/g, '');
                     rmdir.rmdir(classpath);
                     process.send({result: output});
                 });
@@ -76,12 +76,13 @@ process.on('message', function(data) {
         //lets the child message through the console
         child.stdout.on('data', function (data) {
             //console.log(data.toString());
-            process.send({result: data.toString().replace(/[\b\f\t\r]/g, '')})
+            rmdir.rmdir(classpath);
+            process.send({result: data.toString().replace(/[\\\/\'\"\b\f\t\r]/g, '')});
         });
 
         child.stderr.on('data', function (data) {
             //console.log(data.toString());
-            output = data.toString().replace(/[\b\f\t\r]/g, '');
+            output = data.toString().replace(/[\\\/\'\"\b\f\t\r]/g, '');
             rmdir.rmdir(classpath);
             process.send({result: output});
         });

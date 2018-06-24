@@ -6,10 +6,10 @@ let expect = chai.expect;
 chai.use(chaiHttp);
 
 //use this for testing on docker
-let endPoint = "192.168.99.100:3000/api/compiler";
+//let endPoint = "192.168.99.100:3000/api/compiler";
 
 //use this for testing locally
-// let endPoint = "http://localhost:3000/api/compiler";
+let endPoint = "http://localhost:3000/api/compiler";
 
 describe('Compile Test',() =>{
     it('Compile', (done) => {

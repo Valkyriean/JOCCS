@@ -42,14 +42,14 @@ process.on('message', function(data) {
       result.stdout.on('data', function(data) {
           //console.log(data.toString());
           if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
-              output = data.toString().replace(/[\b\f\r\t]/g, '').split("\n")
+              output = data.toString().replace(/[\\\/\'\"\b\f\r\t]/g, '').split("\n")
               if(output.length != 1 & output.length != 0) output.pop();
-          } else output = data.toString().replace(/[\b\f\n\r\t]/g, '')
+          } else output = data.toString().replace(/[\\\/\'\"\b\f\n\r\t]/g, '')
       });
 
       result.stderr.on('data', function(data) {
           console.log(data.toString())
-          output = data.toString().replace(/[\b\f\r\t]/g, '');
+          output = data.toString().replace(/[\\\/\'\"\b\f\r\t]/g, '');
           rmdir.rmdir(path);
           process.send({result: output});
       })
