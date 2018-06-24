@@ -1,3 +1,16 @@
+/* Cheat sheet
+
+docker build -t joccs .
+docker run -p 3000:3000 joccs
+docker container ls
+docker container stop
+docker tag joccs
+docker push valkyriean/joccs:first
+docker run -p 3000:3000 valkyriean/joccs:first
+
+docker login
+
+*/
 // var createError = require('http-errors');
 // var express = require('express');
 // var path = require('path');
