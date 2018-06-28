@@ -50,7 +50,7 @@ exports.compile = function(req,res,next) {
 
 exports.onlyCompile = function(req, res) {
 
-    var child_2 = fork('prototype/test2.js');
+    var child_2 = fork('prototype/processTime.js');
     var date = new Date().getTime() + ""
     //console.log(date);
 
