@@ -21,13 +21,38 @@ describe('Compile Test',() =>{
               "code":"/**abc*/import java.util.Scanner;/*aaa*/public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);String a = s.nextLine();System.out.println(a);}}"})
             .end((err, res) => {
                 res.body.should.have.status("success");
-                //res.body.should.have.status({result: ["test","aaa"]});
-                //expect(res.body).to.have.a.property("result");
                 expect(res.body).to.have.deep.property('result', ["test"]);
                 done();
             });
     });
 
+    it('Single input and double output', (done) => {
+        chai.request(endPoint)
+            .post('/compile')
+            .send({
+              "input":["test"],
+              "language":"java",
+              "code":"/**abc*/import java.util.Scanner;/*aaa*/public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);String a = s.nextLine();System.out.println(a);System.out.println(a+a);}}"})
+            .end((err, res) => {
+                res.body.should.have.status("success");
+                expect(res.body).to.have.deep.property('result', ["test","testtest"]);
+                done();
+            });
+    });
+
+    it('Double input and single output', (done) => {
+        chai.request(endPoint)
+            .post('/compile')
+            .send({
+              "input":["test","aaa"],
+              "language":"java",
+              "code":"/**abc*/import java.util.Scanner;/*aaa*/public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);String a = s.nextLine();String b = s.nextLine();System.out.println(a+b);}}"})
+            .end((err, res) => {
+                res.body.should.have.status("success");
+                expect(res.body).to.have.deep.property('result', ["testaaa"]);
+                done();
+            });
+    });
     it('Double input and double output', (done) => {
         chai.request(endPoint)
             .post('/compile')
@@ -37,8 +62,6 @@ describe('Compile Test',() =>{
               "code":"/**abc*/import java.util.Scanner;/*aaa*/public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);String a = s.nextLine();String b = s.nextLine();System.out.println(a); System.out.println(b);}}"})
             .end((err, res) => {
                 res.body.should.have.status("success");
-                //res.body.should.have.status({result: ["test","aaa"]});
-                //expect(res.body).to.have.a.property("result");
                 expect(res.body).to.have.deep.property('result', ["test","aaa"]);
                 done();
             });
