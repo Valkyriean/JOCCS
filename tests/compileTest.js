@@ -24,7 +24,7 @@ describe('Compile Test',() =>{
                 expect(res.body).to.have.deep.property('result', ["test"]);
                 done();
             });
-    });
+          }).timeout(10000);
 
     it('Single input and double output', (done) => {
         chai.request(endPoint)
@@ -38,7 +38,7 @@ describe('Compile Test',() =>{
                 expect(res.body).to.have.deep.property('result', ["test","testtest"]);
                 done();
             });
-    });
+          }).timeout(10000);
 
     it('Double input and single output', (done) => {
         chai.request(endPoint)
@@ -52,7 +52,8 @@ describe('Compile Test',() =>{
                 expect(res.body).to.have.deep.property('result', ["testaaa"]);
                 done();
             });
-    });
+          }).timeout(10000);
+
     it('Double input and double output', (done) => {
         chai.request(endPoint)
             .post('/compile')
@@ -65,5 +66,5 @@ describe('Compile Test',() =>{
                 expect(res.body).to.have.deep.property('result', ["test","aaa"]);
                 done();
             });
-    });
+          }).timeout(10000);
 });
