@@ -27,7 +27,7 @@ process.on('message', function(data) {
       if(typeof(inputArr) != 'object') result.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
       else {
         inputArr.forEach(function(item) {
-          result.stdin.write("'" + item.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
+          result.stdin.write('"' + item.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + '"' + "\n");
         })
       }
       result.stdin.end()
