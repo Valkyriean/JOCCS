@@ -27,6 +27,23 @@ var trimSpace = function(str) {
     return str.replace(/\s/, "");
 }
 
+var remove = function(arr) {
+    var counter = 0;
+
+    arr.forEach(function(item) {
+        if(item == ""){
+            counter += 1;
+        };
+    });
+
+    while(counter > 0) {
+        arr.splice(arr.indexOf(""),1);
+        counter -= 1;
+    };
+    return arr;
+}
+
 exports.isEqual = isEqual;
 exports.trimSpace = trimSpace;
 exports.toSingle = toSingleArray;
+exports.remove = remove;
