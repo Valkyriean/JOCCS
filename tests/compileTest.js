@@ -12,7 +12,23 @@ chai.use(chaiHttp);
 let endPoint = "http://localhost:3000/api/compiler";
 
 describe('Compile Test',() =>{
-    it('Compile', (done) => {
+    it('Single input and single output', (done) => {
+        chai.request(endPoint)
+            .post('/compile')
+            .send({
+              "input":["test"],
+              "language":"java",
+              "code":"/**abc*/import java.util.Scanner;/*aaa*/public class test { public static void main(String[] args){Scanner s = new Scanner(System.in);String a = s.nextLine();System.out.println(a);}}"})
+            .end((err, res) => {
+                res.body.should.have.status("success");
+                //res.body.should.have.status({result: ["test","aaa"]});
+                //expect(res.body).to.have.a.property("result");
+                expect(res.body).to.have.deep.property('result', ["test"]);
+                done();
+            });
+    });
+
+    it('Double input and double output', (done) => {
         chai.request(endPoint)
             .post('/compile')
             .send({
