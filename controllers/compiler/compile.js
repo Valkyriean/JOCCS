@@ -73,6 +73,7 @@ exports.onlyCompile = function(req, res) {
       child.on('message', function(data) {
         child.kill();
         child_2.kill();
+        console.log(data.result)
         res.json({'result': data.result, 'status': "success"})
       })
       child.send({input: req.body.input, code: req.body.code, date: date});
@@ -83,6 +84,8 @@ exports.onlyCompile = function(req, res) {
 
       child.on('message', function(data) {
         child.kill()
+        child_2.kill()
+        console.log(data.result)
         res.json({'result': data.result, 'status': "success"});
       });
       child.send({input: req.body.input, code: req.body.code, date: date});
