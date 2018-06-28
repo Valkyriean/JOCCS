@@ -60,6 +60,7 @@ process.on('message', function(data) {
                 runClass.stdout.on('data', function(data) {
                     if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
                         output.push(data.toString().trim().replace(/[\'\"\\\/\b\f\t\r]/g, '').split("\n"))
+                        console.log("data:" + data.toString());
                         //if(output.length != 1 & output.length != 0) output.pop();
                     } else output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '')
                 });
@@ -67,6 +68,7 @@ process.on('message', function(data) {
                 runClass.stderr.on('data', function(data) {
                     //console.log(data.toString());
                     output = data.toString().replace(/[\'\"\\\/\b\f\t\r]/g, '');
+                    console.log("err:" + data.toString());
                     rmdir.rmdir(classpath);
                     process.send({result: output});
                 });
@@ -82,7 +84,7 @@ process.on('message', function(data) {
 
         child.stderr.on('data', function (data) {
             //console.log(data.toString());
-            output = data.toString().replace(/[\\\/\'\"\b\f\t\r]/g, '');
+            output = data.toString().replace(/[\'\"\b\f\t\r]/g, '');
             rmdir.rmdir(classpath);
             process.send({result: output});
         });

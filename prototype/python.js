@@ -42,6 +42,7 @@ process.on('message', function(data) {
       result.stdout.on('data', function(data) {
           //console.log(data.toString());
           if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
+              console.log(data.toString());
               output = data.toString().replace(/[\\\/\'\"\b\f\r\t]/g, '').split("\n")
               if(output.length != 1 & output.length != 0) output.pop();
           } else output = data.toString().replace(/[\\\/\'\"\b\f\n\r\t]/g, '')
