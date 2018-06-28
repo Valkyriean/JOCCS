@@ -2,6 +2,7 @@ var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
 var toSingle = require('./utils/functions').toSingle;
+var remove = require('./utils/functions').remove;
 
 process.on('message', function(data) {
       var inputArr = data.input;
@@ -10,14 +11,14 @@ process.on('message', function(data) {
       code = code.replace(/\/\*(\s|.)*?\*\//g, "");
 
       var time = 0;
-      if(code.match(/\.println\((\s|.)*?\)/g) != null) time = code.match(/\.println\((\s|.)*?\)/g).length
+      if(code.match(/\.println\((\s|.)*?\)/g) != null) time = code.match(/\.println\((\s|.)*?\)/g).length;
 
       var res = code.match(/[^{]*/);
-      var codeTokens = res[0].trim().split(" ")
+      var codeTokens = res[0].trim().split(" ");
       var classname = codeTokens[codeTokens.length-1];
 
       var foldername = data.date + "_" + "java";
-      var classpath = "./prototype/compileFolder/"+foldername
+      var classpath = "./prototype/compileFolder/"+foldername;
       fs.mkdirSync(classpath);
       fs.writeFileSync(classpath+"/"+classname+".java", code);
 
@@ -49,12 +50,10 @@ process.on('message', function(data) {
                       var arr = [""]
                       output = toSingle(output, arr);
                       output.splice(0,2);
-                      while(output.length > time) {
-                        output.pop();
-                      }
-                    }
+                      output = remove(output);
+                    };
                     //console.log(output);
-                    process.send({result: output})
+                    process.send({result: output});
                 });
 
                 runClass.stdout.on('data', function(data) {
@@ -72,7 +71,7 @@ process.on('message', function(data) {
                     rmdir.rmdir(classpath);
                     process.send({result: output});
                 });
-            }
+            };
         });
 
         //lets the child message through the console

@@ -36,7 +36,7 @@ process.on('message', function(data) {
           result.kill();
           rmdir.rmdir(path);
           //output = toSingle(output);
-          process.send({result: output})
+          process.send({result: output});
       })
 
       result.stdout.on('data', function(data) {
