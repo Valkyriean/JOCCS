@@ -3,10 +3,13 @@
 docker build -t joccs .
 docker run -p 3000:3000 joccs
 docker container ls
-docker container stop 
+docker container stop
 docker tag joccs valkyriean/joccs:first
 docker push valkyriean/joccs:first
 docker run -p 3000:3000 valkyriean/joccs:first
+
+docker container rm $(docker container ls -a -q)
+docker image rm $(docker image ls -a -q)
 
 docker image rm <image id>
 docker login
