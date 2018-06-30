@@ -27,7 +27,7 @@ process.on('message', function(data) {
       if(typeof(inputArr) != 'object') result.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "\n")
       else {
         inputArr.forEach(function(item) {
-          result.stdin.write('"' + item.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + '"' + "\n");
+          result.stdin.write(item.toString().replace(/[\\\/\b\f\n\r\t]/g, '') + "\n");
         })
       }
       result.stdin.end()
@@ -43,14 +43,14 @@ process.on('message', function(data) {
           //console.log(data.toString());
           if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
               console.log(data.toString());
-              output = data.toString().replace(/[\\\/\'\"\b\f\r\t]/g, '').split("\n")
+              output = data.toString().replace(/[\b\f\r\t]/g, '').split("\n")
               if(output.length != 1 & output.length != 0) output.pop();
-          } else output = data.toString().replace(/[\\\/\'\"\b\f\n\r\t]/g, '')
+          } else output = data.toString().replace(/[\b\f\n\r\t]/g, '')
       });
 
       result.stderr.on('data', function(data) {
           console.log(data.toString())
-          output = data.toString().replace(/[\\\/\'\"\b\f\r\t]/g, '');
+          output = data.toString().replace(/[\b\f\r\t]/g, '');
           rmdir.rmdir(path);
           process.send({result: output});
       })

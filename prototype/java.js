@@ -9,6 +9,7 @@ process.on('message', function(data) {
       var code = data.code;
 
       code = code.replace(/\/\*(\s|.)*?\*\//g, "");
+      code = code.replace(/\/\/(\s|.)*?\n/g,"");
 
       var time = 0;
       if(code.match(/\.println\((\s|.)*?\)/g) != null) time = code.match(/\.println\((\s|.)*?\)/g).length;
@@ -38,7 +39,7 @@ process.on('message', function(data) {
                 if(typeof(inputArr) != 'object') runClass.stdin.write(inputArr.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, ''))
                 else {
                   inputArr.forEach(function(item) {
-                    runClass.stdin.write("'" + item.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '') + "'" + "\n");
+                    runClass.stdin.write("'" + item.toString().replace(/[\b\f\n\r\t]/g, '') + "'" + "\n");
                   })
                 }
                 runClass.stdin.end();
@@ -58,15 +59,15 @@ process.on('message', function(data) {
 
                 runClass.stdout.on('data', function(data) {
                     if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
-                        output.push(data.toString().trim().replace(/[\'\"\\\/\b\f\t\r]/g, '').split("\n"))
+                        output.push(data.toString().trim().replace(/[\b\f\t\r]/g, '').split("\n"))
                         console.log("data:" + data.toString());
                         //if(output.length != 1 & output.length != 0) output.pop();
-                    } else output = data.toString().replace(/[\'\"\\\/\b\f\n\r\t]/g, '')
+                    } else output = data.toString().replace(/[\b\f\n\r\t]/g, '')
                 });
 
                 runClass.stderr.on('data', function(data) {
                     //console.log(data.toString());
-                    output = data.toString().replace(/[\'\"\\\/\b\f\t\r]/g, '');
+                    output = data.toString().replace(/[\b\f\t\r]/g, '');
                     console.log("err:" + data.toString());
                     rmdir.rmdir(classpath);
                     process.send({result: output});
@@ -78,12 +79,12 @@ process.on('message', function(data) {
         child.stdout.on('data', function (data) {
             //console.log(data.toString());
             rmdir.rmdir(classpath);
-            process.send({result: data.toString().replace(/[\\\/\'\"\b\f\t\r]/g, '')});
+            process.send({result: data.toString().replace(/[\b\f\t\r]/g, '')});
         });
 
         child.stderr.on('data', function (data) {
             //console.log(data.toString());
-            output = data.toString().replace(/[\'\"\b\f\t\r]/g, '');
+            output = data.toString().replace(/[\b\f\t\r]/g, '');
             rmdir.rmdir(classpath);
             process.send({result: output});
         });

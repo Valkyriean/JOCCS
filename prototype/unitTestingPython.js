@@ -6,7 +6,6 @@ process.on('message', function(data) {
 
     var code = data.code;
     var unitTest = data.unitTest;
-    var test = "unittest.main()";
 
     if(code.match(/input\((.*)\)?/g) != null) code = code.replace(/input\((.*)\)?/g, 'input("")');
 

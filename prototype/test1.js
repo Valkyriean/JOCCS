@@ -14,7 +14,7 @@ child.send({
     unitTest: "import unittest \nclass UnitTests(unittest.TestCase): \n    def test_1(self): \n        self.assertEqual(abc(),1) \n    def test_2(self): \n        self.assertEqual(abc(),2)"
   })
 
-var child_2 = fork('./test2.js')
+var child_2 = fork('./processTime.js')
 
 child_2.on('message', function(data) {
     child.kill()

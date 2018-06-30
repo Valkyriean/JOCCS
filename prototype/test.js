@@ -13,7 +13,7 @@ process.on('message', function(data) {
   })
 
   child.stdin.setEncoding('utf-8');
-  child.stdin.write("'" + "a" + "'" + "\n");
+  child.stdin.write(2 + "\n");
   child.stdin.end();
 
   child.stdout.on('data', function(data) {

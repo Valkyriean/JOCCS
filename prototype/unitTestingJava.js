@@ -1,18 +1,21 @@
 var fs = require('fs');
 var spawn = require('child_process').spawn;
 var rmdir = require('./utils/rmdir');
+var remove = require('./utils/functions').remove;
 
 process.on('message', function(data) {
 
     var code = data.code;
     var unitTest = data.unitTest;
+    var code = code + "\n" + unitTest;
 
     code = code.replace(/\/\*(\s|.)*?\*\//g, "");
+    code = code.replace(/\/\/(\s|.)*?\n/g,"");
 
     var time = 0;
     if(code.match(/\.println\((\s|.)*?\)/g) != null) time = code.match(/\.println\((\s|.)*?\)/g).length
 
-    var res = code.match(/[^{]*/);
+    var res = unitTest.match(/[^{]*/);
     var codeTokens = res[0].trim().splice(" ");
     var classname = codeTokens[codeTokens.length - 1];
 
@@ -43,9 +46,7 @@ process.on('message', function(data) {
                     var arr = [""];
                     output = toSingle(output, arr);
                     output.splice(0,2);
-                    while(output.length > time) {
-                       output.pop();
-                    };
+                    output = remove(output);
                 };
                 console.log(output);
                 process.send({result: output});
@@ -66,11 +67,11 @@ process.on('message', function(data) {
 
     child.stdout.on('data', function(data) {
         rmdir.rmdir(classpath);
-        process.send({result: data.toString().replace(/[\\\/\'\"\b\f\t\r]/g, '')});
+        process.send({result: data.toString().replace(/[\b\f\t\r]/g, '')});
     });
 
     child.stderr.on('data', function(data) {
         rmdir.rmdir(classpath);
-        process.send({result: data.toString().replace(/[\\\/\'\"\b\f\t\r]/g, '')});
+        process.send({result: data.toString().replace(/[\b\f\t\r]/g, '')});
     });
 });
