@@ -1,3 +1,8 @@
 a = input("")
+b = input("")
 
-print(a)
+a = int(a)
+b = int(b)
+
+print(a + b)
+print(type(a))

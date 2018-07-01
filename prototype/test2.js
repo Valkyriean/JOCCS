@@ -20,22 +20,37 @@
 // console.log(code);
 
 var spawn = require('child_process').spawn;
-var result = ""
-var child = spawn("python", ["TestCases/Python/Case_1/test.py"])
+var result;
+var child = spawn("python3", ["TestCases/Python/Case_1/test.py"])
 
 child.on('exit', function(code, signal) {
     child.kill();
     console.log(result)
 })
 
+var a = "2"
+
 child.stdin.setEncoding('utf-8');
-child.stdin.write(2 + "\n");
+child.stdin.write(a + "\n");
+child.stdin.write(a + "\n");
 child.stdin.end();
 
 child.stdout.on('data', function(data) {
-    var result = data.toString();
+    result = data.toString();
+    console.log("a")
 })
 
 child.stderr.on('data', function(data) {
-    var result = data.toString();
+    result = data.toString();
 })
+//
+// var a = "-12.5"
+// var b;
+// try{
+//     b = +a;
+//     console.log(typeof(b));
+//     console.log(b)
+//     if(isNaN(b)) console.log("a")
+// } catch{
+//     console.log(a);
+// }
