@@ -1,56 +1,32 @@
-// var a = [1,"",2,"","",4]
-// var counter = 0;
-//
-// a.forEach(function(item) {
-//     if(item == ""){
-//         counter += 1;
-//     };
-// });
-//
-// while(counter > 0) {
-//     a.splice(a.indexOf(""),1);
-//     counter -= 1;
-// };
+var amqp = require('amqp')
 
-// var code = "//abc\n//abc\nabc"
-//
-// code = code.replace(/\/\*(\s|.)*?\*\//g, "");
-// code = code.replace(/\/\/(\s|.)*?\n/g,"")
-//
-// console.log(code);
+var connection = amqp.createConnection({url: "amqp://admin:admin:@127.0.0.1:5672"})
 
-var spawn = require('child_process').spawn;
-var result;
-var child = spawn("python3", ["TestCases/Python/Case_1/test.py"])
 
-child.on('exit', function(code, signal) {
-    child.kill();
-    console.log(result)
-})
-
-var a = "2"
-
-child.stdin.setEncoding('utf-8');
-child.stdin.write(a + "\n");
-child.stdin.write(a + "\n");
-child.stdin.end();
-
-child.stdout.on('data', function(data) {
-    result = data.toString();
-    console.log("a")
-})
-
-child.stderr.on('data', function(data) {
-    result = data.toString();
-})
-//
-// var a = "-12.5"
-// var b;
-// try{
-//     b = +a;
-//     console.log(typeof(b));
-//     console.log(b)
-//     if(isNaN(b)) console.log("a")
-// } catch{
-//     console.log(a);
+// var exchOption = {
+//     type: "topic",
+//     durable: true,
+//     autoDelete: false,
+//     confirm: false
 // }
+
+connection.on("ready", function() {
+    console.log("fuck")
+    console.log("ready");
+    var callback = false;
+    var exch = connection.exchange("topic", {type: 'direct', autoDelete: false})
+    connection.queue("queue1", {autoDelete: false}, function(quene) {
+        queue.bind("topic", "queue1", function() {
+            exchange.publish('queue1', 'test message');
+            callback = true;
+            setTimeout(function() {
+                console.log("single queue bind successed");
+                connection.end();
+                connection.destroy()
+            }, 5000);
+        });
+        queue.subscribe(function(message) {
+            console.log("message is" + message.data.toString());
+        })
+    });
+});
