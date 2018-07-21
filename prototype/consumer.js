@@ -1,6 +1,6 @@
 const amqp = require('amqplib');
 const uuid = require('uuid/v4');
-const host = "amqp://rabbitmq:rabbitmq@localhost";
+const host = "amqps://rabbitmq:rabbitmq@localhost";
 const amqpCon = amqp.connect(host);
 
 amqpCon
@@ -11,12 +11,12 @@ amqpCon
       ch.prefetch(1000);
       ch.consume(queue, (msg) => {
           const content = msg.content.toString();
-          const replyWord =  'hi there'
-          console.log(content)
+          const replyWord =  'Hi There';
+          console.log(content);
           ch.ack(msg);
           ch.sendToQueue(
               msg.properties.replyTo,
               Buffer.from(replyWord),
-              {correlationId: msg.properties.correlationId});
+              { correlationId: msg.properties.correlationId});
       });
   });
