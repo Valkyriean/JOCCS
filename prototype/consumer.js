@@ -1,14 +1,22 @@
-var amqp = require('amqp')
+const amqp = require('amqplib');
+const uuid = require('uuid/v4');
+const host = "amqp://rabbitmq:rabbitmq@localhost";
+const amqpCon = amqp.connect(host);
 
-var connection = amqp.createConnection({url: "amqp://admin:admin@127.0.0.1:5672"})
-
-var bStop = false;
-
-connection.on('ready', function() {
-    connection.quene('topic', {durable: true, autoDelete: false}, function(queue) {
-        queue.bind("topic", "topic");
-        queue.subscribe(function(message, header, deliveryInfo) {
-            console.log(message.data.toString());
-        })
-    })
-})
+amqpCon
+  .then(conn => conn.createChannel())
+  .then((ch) => {
+      const queue = 'test_pub_sub_rpc';
+      ch.assertQueue(queue, {durable: false});
+      ch.prefetch(1000);
+      ch.consume(queue, (msg) => {
+          const content = msg.content.toString();
+          const replyWord =  'hi there'
+          console.log(content)
+          ch.ack(msg);
+          ch.sendToQueue(
+              msg.properties.replyTo,
+              Buffer.from(replyWord),
+              {correlationId: msg.properties.correlationId});
+      });
+  });

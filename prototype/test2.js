@@ -1,32 +1,39 @@
-var amqp = require('amqp')
+const amqp = require('amqplib');
+const uuid = require('uuid/v4');
+const EventEmitter = require('events');
+const host = "amqp://rabbitmq:rabbitmq@localhost";
+const amqpCon = amqp.connect(host);
+var queue = null;
+var channel = null;
 
-var connection = amqp.createConnection({url: "amqp://admin:admin:@127.0.0.1:5672"})
+amqpCon
+  .then(conn => conn.createChannel(),err => console.log(err))
+  .then((ch) => {
+      channel = ch;
+      ch.assertQueue('', {
+          exclusive: true,
+          expires: 5000,
+          autoDelete: true
+      }).then((q), => {
+          queue = q;
+          channel.responseEmitter = new EventEmitter();
+          channel.consume(queue.queue, (msg) => {
+              const result = msg.content.tostring();
+              channel.responseEmitter.emit(msg.properties.correlationId, result);
+          });
+      });
+  });
 
+router.get('/test', function(req, res, next) {
+    const corr = uuid();
+    const sentToQueue = 'test_pub_sub_rpc';
+    const content = "hello world";
+    channel.sendToQueue(sendToQueue, new Buffer(content), {
+        correlationId: corr,
+        replyTo: queue.queue
+    });
 
-// var exchOption = {
-//     type: "topic",
-//     durable: true,
-//     autoDelete: false,
-//     confirm: false
-// }
-
-connection.on("ready", function() {
-    console.log("fuck")
-    console.log("ready");
-    var callback = false;
-    var exch = connection.exchange("topic", {type: 'direct', autoDelete: false})
-    connection.queue("queue1", {autoDelete: false}, function(quene) {
-        queue.bind("topic", "queue1", function() {
-            exchange.publish('queue1', 'test message');
-            callback = true;
-            setTimeout(function() {
-                console.log("single queue bind successed");
-                connection.end();
-                connection.destroy()
-            }, 5000);
-        });
-        queue.subscribe(function(message) {
-            console.log("message is" + message.data.toString());
-        })
+    channel.responseEmitter.once(corr, function(data){
+        res.send(data);
     });
 });
