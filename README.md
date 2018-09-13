@@ -31,4 +31,3 @@ The output of code if success<br />
 <> for Boolean<br />
 "" for String<br />
 
-Made by Group Akiraku (あきらく)
