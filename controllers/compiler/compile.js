@@ -6,6 +6,12 @@ exports.compile = function(req,res,next) {
     var date = new Date().getTime() + "";
     var child_2 = fork('prototype/processTime.js')
 
+    var inputArr = req.body.input;
+    if(typeof(req.body.input) == "string") {
+      inputArr.replace("\n","")
+      inputArr = inputArr.split("\r")
+    }
+
     child_2.on('message', function(data) {
       child.kill();
       child_2.kill();
@@ -28,7 +34,7 @@ exports.compile = function(req,res,next) {
           req.result = data.result;
           next();
         });
-        child.send({input: req.body.input, code: req.body.code, date: date});
+        child.send({input: inputArr, code: req.body.code, date: date});
 
     } else if(req.body.language === 'python'){
 
@@ -40,7 +46,7 @@ exports.compile = function(req,res,next) {
           req.result = data.result;
           next();
         })
-        child.send({input: req.body.input, code: req.body.code, date: date});
+        child.send({input: inputArr, code: req.body.code, date: date});
 
     }else{
         child_2.kill()
@@ -53,6 +59,12 @@ exports.onlyCompile = function(req, res) {
     var child_2 = fork('prototype/processTime.js');
     var date = new Date().getTime() + ""
     //console.log(date);
+
+    var inputArr = req.body.input;
+    if(typeof(req.body.input) == "string") {
+      inputArr.replace("\n","")
+      inputArr = inputArr.split("\r")
+    }
 
     child_2.on('message', function(data) {
       child.kill();
@@ -76,7 +88,7 @@ exports.onlyCompile = function(req, res) {
         console.log(data.result)
         res.json({'result': data.result, 'status': "success"})
       })
-      child.send({input: req.body.input, code: req.body.code, date: date});
+      child.send({input: inputArr, code: req.body.code, date: date});
 
     } else if(req.body.language === 'python'){
 
@@ -88,7 +100,7 @@ exports.onlyCompile = function(req, res) {
         console.log(data.result)
         res.json({'result': data.result, 'status': "success"});
       });
-      child.send({input: req.body.input, code: req.body.code, date: date});
+      child.send({input: inputArr, code: req.body.code, date: date});
 
     } else{
 

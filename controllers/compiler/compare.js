@@ -11,8 +11,11 @@ exports.compare = function(req, res) {
      })
      output.splice(0,1);
    }
-   var result = compare(req.result, output);
+  console.log(req.body.output)
+  console.log(output)
+   var result = compare(req.result, req.body.output);
    console.log(req.result);
+   console.log(result)
    res.json({
      'result': req.result,
      'status': result
