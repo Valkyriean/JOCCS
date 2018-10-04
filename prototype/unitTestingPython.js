@@ -6,16 +6,18 @@ process.on('message', function(data) {
 
     var code = data.code;
     var unitTest = data.unitTest;
+    var code = code + /n + unitTest
+    code = code.replace(/\n/g, "\\n")
 
     if(code.match(/input\((.*)\)?/g) != null) code = code.replace(/input\((.*)\)?/g, 'input("")');
 
-    var foldername = new Date().getTime() + "_" + "python";
-    var path = "./" + foldername;
-    fs.mkdirSync(path);
-    fs.writeFileSync(path + "/" + "main.py", code + "\n" + unitTest + "\n" + test);
+    // var foldername = new Date().getTime() + "_" + "python";
+    // var path = "./" + foldername;
+    // fs.mkdirSync(path);
+    // fs.writeFileSync(path + "/" + "main.py", code + "\n" + unitTest);
 
     var command = "python";
-    var parameter = [path + "/main.py"];
+    var parameter = ["-c", "exec(compile('" + code + "','sumstring','exec'))"];
     var child = spawn(command, parameter);
     var output;
 

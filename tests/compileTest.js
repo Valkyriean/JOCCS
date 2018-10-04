@@ -127,4 +127,64 @@ describe('Compile Test',() =>{
                 done()
               })
       }).timeout(10000)
+
+      it('blank output python', (done) => {
+          chai.request(endPoint)
+              .post('/compile')
+              .send({
+                "input": "",
+                "language": "python",
+                "code": 'print(" ")'
+              })
+              .end((err, res)=> {
+                res.body.should.have.status("success");
+                expect(res.body).to.have.deep.property('result', [" "])
+                done()
+              })
+      }).timeout(10000)
+
+      it('blank output java', (done) => {
+          chai.request(endPoint)
+              .post('/compile')
+              .send({
+                "input": "",
+                "language": "java",
+                "code": 'public class test{public static void main(String[] arg){System.out.println(" ");}}'
+              })
+              .end((err, res)=> {
+                res.body.should.have.status("success");
+                expect(res.body).to.have.deep.property('result', [" "])
+                done()
+              })
+      }).timeout(10000)
+
+      it('String null output python', (done) => {
+          chai.request(endPoint)
+              .post('/compile')
+              .send({
+                "input": "",
+                "language": "python",
+                "code": 'print("")\nprint("")'
+              })
+              .end((err, res) => {
+                res.body.should.have.status("success");
+                expect(res.body).to.have.deep.property('result', ["",""])
+                done()
+              })
+      }).timeout(10000)
+
+      it('String null output java', (done) => {
+          chai.request(endPoint)
+              .post('/compile')
+              .send({
+                "input": "",
+                "language": "java",
+                "code": 'public class test { public static void main(String[] arg) {System.out.println("");System.out.println("");}}'
+              })
+              .end((err, res) => {
+                res.body.should.have.status("success");
+                expect(res.body).to.have.deep.property('result', ["",""])
+                done()
+              })
+      }).timeout(10000)
 });

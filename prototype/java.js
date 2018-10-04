@@ -59,10 +59,12 @@ process.on('message', function(data) {
 
                 runClass.stdout.on('data', function(data) {
                     if(data.toString().match(/[\[\]\(\)\{\}]/) == null) {
-                        output.push(data.toString().trim().replace(/[\'\b\\\f\t\r]/g, '').split("\n"))
+                        output.push(data.toString().replace(/[\'\\\f\t\r]/g, '').split("\n"))
+                        console.log("data:" + data.toString().replace(/[\'\\\f\t\r]/g, '').split("\n"))
+                        console.log(data.toString().replace(/[\'\\\f\t\r]/g, '').split("\n")[0] == "")
                         //console.log("data:" + data.toString());
                         //if(output.length != 1 & output.length != 0) output.pop();
-                    } else output = data.toString().replace(/[\'\b\\\f\n\r\t]/g, '')
+                    } else output = data.toString().replace(/[\'\\\f\n\r\t]/g, '')
                 });
 
                 runClass.stderr.on('data', function(data) {

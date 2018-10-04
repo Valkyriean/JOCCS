@@ -24,7 +24,7 @@ var toSingleArray = function(arr, result) {
 }
 
 var trimSpace = function(str) {
-    return str.replace(/\s/, "");
+    return str.replace(/\s/g, "");
 }
 
 var remove = function(arr) {

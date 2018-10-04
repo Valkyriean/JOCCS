@@ -8,8 +8,8 @@ exports.compile = function(req,res,next) {
 
     var inputArr = req.body.input;
     if(typeof(req.body.input) == "string") {
-      inputArr.replace("\n","")
-      inputArr = inputArr.split("\r")
+      inputArr.replace("\r","");
+      inputArr = inputArr.split("\n");
     }
 
     child_2.on('message', function(data) {
@@ -18,7 +18,7 @@ exports.compile = function(req,res,next) {
       if(req.body.language == 'java') {
         rmdir.rmdir("./prototype/compileFolder/" + date + "_java")
       } else {
-        rmdir.rmdir("./prototype/compileFolder/" + date + "_python")
+        //rmdir.rmdir("./prototype/compileFolder/" + date + "_python")
       }
       res.json({'status': data.message});
     })
@@ -62,8 +62,8 @@ exports.onlyCompile = function(req, res) {
 
     var inputArr = req.body.input;
     if(typeof(req.body.input) == "string") {
-      inputArr.replace("\n","")
-      inputArr = inputArr.split("\r")
+      inputArr.replace("\r","")
+      inputArr = inputArr.split("\n")
     }
 
     child_2.on('message', function(data) {
@@ -72,7 +72,7 @@ exports.onlyCompile = function(req, res) {
       if(req.body.language == 'java') {
         rmdir.rmdir("./prototype/compileFolder/" + date + "_java")
       } else {
-        rmdir.rmdir("./prototype/compileFolder/" + date + "_python")
+        //rmdir.rmdir("./prototype/compileFolder/" + date + "_python")
       }
       res.json({'status': data.message});
     })
